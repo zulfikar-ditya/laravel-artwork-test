@@ -4,7 +4,6 @@
 use App\Models\Artwork;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 
 test('user with role artist can access Artwork index', function () {
     $role = Role::factory()->create(['name' => 'artist']);

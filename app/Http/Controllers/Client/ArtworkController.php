@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Services\ArtworkServiceInterface;
-use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
