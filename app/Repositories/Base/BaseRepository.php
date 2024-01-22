@@ -3,7 +3,7 @@
 namespace App\Repositories\Base;
 
 use App\Interfaces\Base\BaseRepositoryInterface;
-use App\Support\Str;
+use App\Supports\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
 

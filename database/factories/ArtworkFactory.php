@@ -22,6 +22,7 @@ class ArtworkFactory extends Factory
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
             'path' => UploadedFile::fake()->image('artwork.jpg'),
+            'status' => 'active',
         ];
     }
 }

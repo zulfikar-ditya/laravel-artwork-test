@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Supports\Str;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-
 
 class ArtworkSeeder extends Seeder
 {

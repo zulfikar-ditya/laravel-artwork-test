@@ -120,7 +120,7 @@ trait ControllerHelpers
             return response()->file($file_path);
         }
 
-        return response()->file(public_path('images\illustrations\error-404.svg'));
+        return response()->file(public_path('dummy\images\image-1.jpg'));
     }
 
     /**

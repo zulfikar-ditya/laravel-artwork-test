@@ -2,13 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\ClinicCacheNotFoundException;
 use App\Exceptions\PasswordOldNotMatchException;
-use App\Interfaces\Repositories\ClinicRepositoryInterface;
 use App\Interfaces\Repositories\UserRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Models\User;
-use App\Support\ClinicCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,23 +21,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->setAllowableSearch([
             'name',
             'email',
-            'password',
-            'phone_number',
-            'address',
             // 'avatar',
             'status',
-            'gender',
         ]);
 
         $this->setAllowableSort([
             'name',
             'email',
-            'password',
-            'phone_number',
-            'address',
             // 'avatar',
             'status',
-            'gender',
         ]);
 
         $this->setAllowableFilter([
@@ -49,22 +38,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         ]);
 
         $this->setAllowableInclude([
-            'clinics' => function ($q) {
-                $q->select([
-                    'clinics.id',
-                    'name',
-                    'sort'
-                ]);
-            },
             'roles' => function ($q) {
                 $q->select([
                     'roles.id',
-                    'name',
-                ]);
-            },
-            'specialist' => function ($q) {
-                $q->select([
-                    'specialists.id',
                     'name',
                 ]);
             },
@@ -92,63 +68,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function datatable(Request $request): LengthAwarePaginator
     {
         return $this->datatableQuery($request)->paginate($request->per_page ?? config('app.default_paginator'));
-    }
-
-    /**
-     * datatable repository current cache clinic
-     */
-    public function datatableCurrentCacheClinic(Request $request): LengthAwarePaginator
-    {
-        $currentClinic = app(ClinicRepositoryInterface::class)->getUserClinic(ClinicCache::getCurrentClinic()->id);
-
-        // if the current clinic is null set to available
-        if (!$currentClinic) {
-            throw new ClinicCacheNotFoundException();
-        }
-
-        return $this->datatableQuery($request)
-            ->whereHas('clinics', function ($query) use ($currentClinic) {
-                $query->where('clinics.id', $currentClinic->id);
-            })
-            ->paginate($request->per_page ?? config('app.default_paginator'));
-    }
-
-    /**
-     * datatable repository current cache clinic for given roles
-     */
-    public function datatableCurrentCacheClinicForGivenRoles(Request $request, array $roles, bool $withClinicCache = true): LengthAwarePaginator
-    {
-        $currentClinic = null;
-        if ($withClinicCache) {
-            $currentClinic = app(ClinicRepositoryInterface::class)->getUserClinic(ClinicCache::getCurrentClinic()->id);
-
-            if (!$currentClinic) {
-                throw new ClinicCacheNotFoundException();
-            }
-        }
-
-        return $this->datatableQuery($request)
-            ->when($currentClinic && $withClinicCache, function ($query) use ($currentClinic) {
-                $query->whereHas('clinics', function ($query) use ($currentClinic) {
-                    $query->where('clinics.id', $currentClinic->id);
-                });
-            })
-            ->whereHas('roles', function ($query) use ($roles) {
-                $query->whereIn('name', $roles);
-            })
-            ->paginate($request->per_page ?? config('app.default_paginator'));
-    }
-
-    /**
-     * datatable repository for patient
-     */
-    public function datatablePatient(Request $request): LengthAwarePaginator
-    {
-        return $this->datatableQuery($request)
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'patient');
-            })
-            ->paginate($request->per_page ?? config('app.default_paginator'));
     }
 
     /**

@@ -34,9 +34,4 @@ interface UserServiceInterface extends BaseServiceInterface
      * Delete service
      */
     public function delete(User $User): void;
-
-    /**
-     * Detach user from a clinic
-     */
-    public function detachUserFromClinic(User $user, string $clinic): void;
 }

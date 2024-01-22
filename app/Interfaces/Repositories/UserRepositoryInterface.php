@@ -15,21 +15,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
     public function datatable(Request $request): LengthAwarePaginator;
 
     /**
-     * datatable repository current cache clinic
-     */
-    public function datatableCurrentCacheClinic(Request $request): LengthAwarePaginator;
-
-    /**
-     * datatable repository current cache clinic for given roles
-     */
-    public function datatableCurrentCacheClinicForGivenRoles(Request $request, array $roles, bool $withClinicCache = true): LengthAwarePaginator;
-
-    /**
-     * datatable repository for patient
-     */
-    public function datatablePatient(Request $request): LengthAwarePaginator;
-
-    /**
      * Create repository
      */
     public function create(array $data): User;

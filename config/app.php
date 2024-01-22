@@ -144,6 +144,11 @@ return [
         // 'store' => 'redis',
     ],
 
+    /**
+     * Default Paginator
+     */
+    'default_paginator' => 10,
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -165,9 +170,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\BindServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class,
     ])->toArray(),
 
     /*
